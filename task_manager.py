@@ -34,6 +34,16 @@ def login() :
                     task status \n4--View task status"
             )
             a = input()
+            if a == '1':
+                view_data(usernm)
+            elif a == '2':
+                task_information(usernm)
+            elif a == '3':
+                tas_update(user_nm)
+            elif a == '4':
+                task_update_viewer(user_nm)
+            else:
+                print("Wrong input!!! ")
         else:
             print("YOUR PASSSWORD OR USERNAME IS WRONG, TRY AGAIN")
             login()
