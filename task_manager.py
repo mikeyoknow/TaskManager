@@ -1,130 +1,127 @@
+import tkinter as tk
+from tkinter import messagebox
 import datetime
 
-def user_information(ussnm, pssd) :
-    name = input("Enter you name please: ")
-    address = input("Your address: ")
-    age = input("Your age please: ")
-    ussnm_ = ussnm+" task.txt"
+class UserInformation:
+    def __init__(self, ussnm, pssd):
+        self.window = tk.Tk()
+        self.window.title("User Information")
 
-    f = open(ussnm_, 'a')
-    f.write(pssd)
-    f.write("\nName: ")
-    f.write(name)
-    f.write('\n')
-    f.write("Address :")
-    f.write(address)
-    f.write('\n')
-    f.write("Age: ")
-    f.write(age)
-    f.write('\n')
-    f.close()
+        self.ussnm_ = ussnm + " task.txt"
+        self.pssd = pssd
 
-def login() :
-    print("Please enter your username: ")
-    user_nm = input("Enter here: ")
+        self.name_label = tk.Label(self.window, text="Enter your name:")
+        self.name_entry = tk.Entry(self.window)
 
-    pssd_wr = (input("enter the password")) + '\n'
-    try:
-        usernm = user_nm+" task.txt"
-        f_ = open(usernm, 'r')
-        k = f_.readline(0)[0]
-        f_.close()
+        self.address_label = tk.Label(self.window, text="Enter your address:")
+        self.address_entry = tk.Entry(self.window)
 
-        if pssd_wr == k:
-            print(
-                "1--To view your data \n2--To add task \n3--Update\
-                    task status \n4--View task status"
-            )
-            a = input()
-            if a == '1':
-                view_data(usernm)
-            elif a == '2':
-                task_information(usernm)
-            elif a == '3':
-                task_update(user_nm)
-            elif a == '4':
-                task_update_viewer(user_nm)
-            else:
-                print("Wrong input!!! ")
-        else:
-            print("YOUR PASSSWORD OR USERNAME IS WRONG, TRY AGAIN")
-            login()
-    except Exception as e:
-        print(e)
-        login()
+        self.age_label = tk.Label(self.window, text="Enter your age:")
+        self.age_entry = tk.Entry(self.window)
 
-def view_data(username):
-    ff = open(username, 'r')
-    print(ff.read())
-    ff.close()
+        self.submit_button = tk.Button(self.window, text="Submit", command=self.submit)
 
-def task_information(username):
-    print("Enter number of task you'd like to add: ")
-    j = int(input())
-    f1 = open(username, 'a')
+        self.name_label.pack()
+        self.name_entry.pack()
+        self.address_label.pack()
+        self.address_entry.pack()
+        self.age_label.pack()
+        self.age_entry.pack()
+        self.submit_button.pack()
 
-    for i in range (1, j+1):
-        task = input("enter the task: ")
-        target = input("enter the target")
-        pp = "TASK" +str(i)+' :'
-        qq = "TARGET" +str(i)+' :'
+        self.window.mainloop()
 
-        f1.write(pp)
-        f1.write(task)
-        f1.write("\n")
-        f1.write(qq)
-        f1.write(target)
-        f1.write("\n")
+    def submit(self):
+        with open(self.ussnm_, 'a') as f:
+            f.write(self.pssd + '\n')
+            f.write(f"Name: {self.name_entry.get()}\n")
+            f.write(f"Address: {self.address_entry.get()}\n")
+            f.write(f"Age: {self.age_entry.get()}\n")
 
-        print("Do you want to stop press space bar otherwise enter")
-        s = input()
-        if s == ' ':
-            break
-    f1.close()
-def task_update(username):
-    username = username+" TASK.txt"
-    print("Please enter the tasks that are completed")
-    task_completed = input()
-    print("Enter task which are still not started by you")
-    task_not_started = input()
-    print("Enter task which you are doing")
-    task_ongoing = input()
+        self.window.destroy()
+        Login()
 
-    fw = open(username, 'a')
-    DT = str(datetime.datetime.now())
+class Signup:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("Signup")
 
-    fw.write(DT)
-    fw.write("\n")
-    fw.write("COMPLETED TASKS: ")
-    fw.write(task_completed)
-    fw.write("\n")
-    fw.write("ONGOING TASKS: ")
-    fw.write(task_ongoing)
-    fw.write("\n")
-    fw.write("NOT YET STARTED: ")
-    fw.write(task_not_started)
-    fw.write("\n")
+        self.username_label = tk.Label(self.window, text="Enter a username:")
+        self.username_entry = tk.Entry(self.window)
 
-def task_update_viewer(username):
-    ussnm = username + " TASK.txt"
-    o = open(ussnm, 'r')
-    print(o.read())
-    o.close()
+        self.password_label = tk.Label(self.window, text="Enter a password:")
+        self.password_entry = tk.Entry(self.window)
 
-def signup() :
-    print("Please enter the username by which you wanna access your account")
-    username = input("please enter here: ")
-    password = input("Enter a password: ")
-    user_information(username,password)
-    print("Proceed to login... ")
-    login()
+        self.submit_button = tk.Button(self.window, text="Submit", command=self.submit)
 
-if __name__ == '__main__':
-    print("WELCOME TO YOUR CONSOLE TASK MANAGER")
-    a = int(input("If you are new to this software, please press 1. Otherwise please press 0:: "))
-    if a == 1:
-        signup()
-    elif a == 0:
-        login()
-    else:
-        print("WRONG INPUT! TRY AGAIN.")
+        self.username_label.pack()
+        self.username_entry.pack()
+        self.password_label.pack()
+        self.password_entry.pack()
+        self.submit_button.pack()
+
+        self.window.mainloop()
+
+    def submit(self):
+        UserInformation(self.username_entry.get(), self.password_entry.get())
+        self.window.destroy()
+
+class Login:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("Login")
+
+        self.username_label = tk.Label(self.window, text="Enter your username:")
+        self.username_entry = tk.Entry(self.window)
+
+        self.password_label = tk.Label(self.window, text="Enter your password:")
+        self.password_entry = tk.Entry(self.window)
+
+        self.login_button = tk.Button(self.window, text="Login", command=self.login)
+
+        self.username_label.pack()
+        self.username_entry.pack()
+        self.password_label.pack()
+        self.password_entry.pack()
+        self.login_button.pack()
+
+        self.window.mainloop()
+
+    def login(self):
+        try:
+            with open(self.username_entry.get() + " task.txt", 'r') as f:
+                password = f.readline().strip()
+                if password == self.password_entry.get():
+                    messagebox.showinfo("Success", "You are successfully logged in")
+                    self.window.destroy()
+                else:
+                    messagebox.showerror("Error", "Incorrect username or password")
+        except FileNotFoundError:
+            messagebox.showerror("Error", "No account associated with this username")
+
+class App:
+    def __init__(self):
+        self.window = tk.Tk()
+        self.window.title("Console Task Manager")
+
+        self.welcome_label = tk.Label(self.window, text="WELCOME TO YOUR CONSOLE TASK MANAGER")
+        self.welcome_label.pack()
+
+        self.login_button = tk.Button(self.window, text="Login", command=self.login)
+        self.login_button.pack()
+
+        self.signup_button = tk.Button(self.window, text="Signup", command=self.signup)
+        self.signup_button.pack()
+
+        self.window.mainloop()
+
+    def login(self):
+        Login()
+        self.window.destroy()
+
+    def signup(self):
+        Signup()
+        self.window.destroy()
+
+if __name__ == "__main__":
+    App()
